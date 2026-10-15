@@ -7,7 +7,7 @@
 
 ## 📋 Descripción del Proyecto
 
-Juego de **Hundir la Flota** por consola en Python puro (sin librerías externas). Dos jugadores: tú (el alumno del Bootcamp BBK) y la máquina. El objetivo es hundir los 10 barcos del adversario antes de que hunda los tuyos.
+Juego de **Hundir la Flota** por consola en Python puro (sin librerías externas). Dos jugadores: la maquina y yo. El objetivo es hundir los 10 barcos del adversario antes de que hunda los tuyos.
 
 - Tablero de **10 × 10** casillas (fila y columna de 0 a 9).
 - La máquina nunca repite disparos y no necesita estructuras adicionales: consulta directamente su radar (`tablero_disparos`).
@@ -29,7 +29,7 @@ DatascienceBBK/
 ├── presentacion.html      # Web interactiva para la presentación en clase
 ├── lanzar_presentacion.py # Abre la presentación en tu navegador
 │
-└── README.md              # Este archivo
+└── README.md              
 ```
 
 ---
