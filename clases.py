@@ -7,7 +7,6 @@ from variables import (
     BARCO,
     TOCADO,
     FALLO,
-    MAX_INTENTOS_BARCO,
 )
 
 
@@ -24,45 +23,52 @@ class Tablero:
 
     def colocar_barcos_aleatoriamente(self):
         """
-        Coloca todos los barcos aleatoriamente en el tablero.
-        Si algún barco no cabe tras MAX_INTENTOS_BARCO, vacía el tablero
-        y reinicia la colocación de toda la flota para evitar bloqueos.
+        Coloca toda la flota aleatoriamente mediante búsqueda con retroceso.
+        Cada posición posible se prueba como máximo una vez por nivel de la
+        búsqueda: si bloquea el resto de la flota, se deshace y se prueba otra.
+        Al ser un conjunto finito de posiciones, el método no puede quedarse
+        reiniciando indefinidamente.
         """
-        while True:
-            # Vaciar el tablero antes de cada intento completo
-            self.tablero_barcos = [[AGUA for _ in range(DIMENSIONES)] for _ in range(DIMENSIONES)]
-            flota_colocada = True
+        self.tablero_barcos = [
+            [AGUA for _ in range(DIMENSIONES)] for _ in range(DIMENSIONES)
+        ]
 
-            for eslora in BARCOS:
-                colocado = False
-                intentos = 0
+        barcos = sorted(BARCOS, reverse=True)
+        posiciones_por_eslora = {}
 
-                while not colocado and intentos < MAX_INTENTOS_BARCO:
-                    intentos += 1
-                    orientacion = random.choice(["H", "V"])
+        for eslora in set(barcos):
+            posiciones = set()
+            for fila in range(DIMENSIONES):
+                for col in range(DIMENSIONES - eslora + 1):
+                    posiciones.add(tuple((fila, col + i) for i in range(eslora)))
+            for fila in range(DIMENSIONES - eslora + 1):
+                for col in range(DIMENSIONES):
+                    posiciones.add(tuple((fila + i, col) for i in range(eslora)))
+            posiciones_por_eslora[eslora] = list(posiciones)
 
-                    if orientacion == "H":
-                        fila = random.randint(0, DIMENSIONES - 1)
-                        col = random.randint(0, DIMENSIONES - eslora)
-                        casillas = [(fila, col + i) for i in range(eslora)]
-                    else:  # Vertical
-                        fila = random.randint(0, DIMENSIONES - eslora)
-                        col = random.randint(0, DIMENSIONES - 1)
-                        casillas = [(fila + i, col) for i in range(eslora)]
+        def colocar_siguiente(indice):
+            if indice == len(barcos):
+                return True
 
-                    # Comprobar si todas las casillas están libres
-                    if all(self.tablero_barcos[f][c] == AGUA for f, c in casillas):
-                        for f, c in casillas:
-                            self.tablero_barcos[f][c] = BARCO
-                        colocado = True
+            posiciones = posiciones_por_eslora[barcos[indice]].copy()
+            random.shuffle(posiciones)
 
-                # Si no se pudo colocar este barco, reiniciar toda la flota
-                if not colocado:
-                    flota_colocada = False
-                    break
+            for casillas in posiciones:
+                if all(self.tablero_barcos[f][c] == AGUA for f, c in casillas):
+                    for f, c in casillas:
+                        self.tablero_barcos[f][c] = BARCO
 
-            if flota_colocada:
-                break
+                    if colocar_siguiente(indice + 1):
+                        return True
+
+                    # Esta opción impidió completar la flota: deshacerla.
+                    for f, c in casillas:
+                        self.tablero_barcos[f][c] = AGUA
+
+            return False
+
+        if not colocar_siguiente(0):
+            raise RuntimeError("No se ha encontrado una colocación válida para la flota.")
 
     def recibir_disparo(self, fila, col):
         """

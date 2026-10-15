@@ -15,6 +15,3 @@ AGUA = "~"
 BARCO = "B"
 TOCADO = "X"
 FALLO = "O"
-
-# Límite de intentos para colocar un barco individual antes de reiniciar el tablero completo
-MAX_INTENTOS_BARCO = 100

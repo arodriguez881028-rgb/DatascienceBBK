@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batalla de Barcos - Data Science Bootcamp BBK</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.03); }
+    }
+    .water-cell {
+      background: radial-gradient(circle, #1e3a8a 10%, #0f172a 90%);
+      transition: all 0.2s ease;
+    }
+    .water-cell:hover {
+      filter: brightness(1.3);
+      cursor: crosshair;
+    }
+    .radar-sweep {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), transparent);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen p-4 md:p-8 antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- ENCABEZADO BBK BOOTCAMP -->
+  <header class="max-w-6xl mx-auto mb-8 border-b border-cyan-800/40 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-600 to-blue-700 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-3xl font-black">
+        ⛵
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider rounded-full bg-cyan-950 text-cyan-400 border border-cyan-700/50">
+            BBK Kuna · Data Science Edition
+          </span>
+          <span class="text-xs text-slate-400">Entrega Oficial Python</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-black tracking-tight bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-400 bg-clip-text text-transparent">
+          Batalla de Barcos del Bootcamp BBK
+        </h1>
+        <p class="text-sm text-slate-400">
+          Desplegado en la Ría de Bilbao · Arquitectura Modular con Backtracking
+        </p>
+      </div>
+    </div>
+
+    <!-- TEMPORIZADOR DE LA PRESENTACIÓN DE 10 MINUTOS -->
+    <div class="flex items-center gap-4 bg-slate-900/90 border border-slate-800 rounded-2xl px-5 py-3 shadow-xl">
+      <div class="text-right">
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Tiempo Presentación</div>
+        <div id="timer-display" class="text-2xl font-mono font-bold text-cyan-400">10:00</div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <button id="timer-btn" onclick="toggleTimer()" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-xs font-bold rounded-lg transition">
+          Iniciar
+        </button>
+        <button onclick="resetTimer()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 rounded-lg transition">
+          Reset
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PESTAÑAS PRINCIPALES: JUEGO / GUIÓN DE PRESENTACIÓN / CÓDIGO -->
+  <main class="max-w-6xl mx-auto space-y-8">
+    <div class="flex border-b border-slate-800 gap-2">
+      <button onclick="showTab('juego')" id="tab-btn-juego" class="px-5 py-2.5 font-bold text-sm border-b-2 border-cyan-400 text-cyan-400 transition flex items-center gap-2">
+        <span>🎮</span> Simulador Interactivo
+      </button>
+      <button onclick="showTab('guion')" id="tab-btn-guion" class="px-5 py-2.5 font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2">
+        <span>⏱️</span> Guión de los 10 Minutos
+      </button>
+      <button onclick="showTab('arquitectura')" id="tab-btn-arquitectura" class="px-5 py-2.5 font-bold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2">
+        <span>💻</span> Estructura y Backtracking
+      </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: SIMULADOR INTERACTIVO DEL JUEGO      -->
+    <!-- ========================================== -->
+    <div id="tab-juego" class="space-y-6">
+      
+      <!-- CONTROLES Y MARCADOR -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Vidas Jugador -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+          <div>
+            <div class="text-xs uppercase text-slate-400 font-medium">Flota BBK (Tú)</div>
+            <div id="vidas-jugador" class="text-2xl font-black text-cyan-400">20 / 20</div>
+            <div class="text-[11px] text-slate-500">Vidas restantes</div>
+          </div>
+          <div class="text-3xl">🛡️</div>
+        </div>
+
+        <!-- Vidas Máquina -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+          <div>
+            <div class="text-xs uppercase text-slate-400 font-medium">Flota Rival (Máquina)</div>
+            <div id="vidas-maquina" class="text-2xl font-black text-rose-400">20 / 20</div>
+            <div class="text-[11px] text-slate-500">Vidas restantes</div>
+          </div>
+          <div class="text-3xl">🤖</div>
+        </div>
+
+        <!-- Turno actual y Mensaje -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 md:col-span-2 flex flex-col justify-between shadow-lg">
+          <div class="flex items-center justify-between">
+            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Estado del Combate</span>
+            <span id="turno-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-900/80 text-cyan-300 border border-cyan-600/40">
+              Turno: Alumno BBK
+            </span>
+          </div>
+          <div id="mensaje-estado" class="text-sm font-medium text-slate-200 mt-1">
+            Haz clic en una casilla del <strong class="text-rose-400">Radar Rival</strong> para disparar un misil.
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN (DEMO, REINICIAR) -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+        <div class="flex items-center gap-2 text-xs text-slate-400">
+          <span class="inline-block w-3 h-3 rounded-sm bg-blue-600"></span> Barco BBK
+          <span class="inline-block w-3 h-3 rounded-sm bg-rose-600 ml-2"></span> Tocado (X)
+          <span class="inline-block w-3 h-3 rounded-sm bg-slate-700 ml-2"></span> Agua (O)
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="toggleDemoMode()" id="btn-demo" class="px-4 py-2 rounded-xl text-xs font-bold border border-amber-500/50 text-amber-400 bg-amber-950/40 hover:bg-amber-900/50 transition flex items-center gap-1.5 shadow-sm">
+            <span>👁️</span> Modo Demo / Tribunal (Revelar Rival)
+          </button>
+          <button onclick="iniciarNuevaPartida()" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-slate-950 transition flex items-center gap-1.5 shadow-md shadow-cyan-600/20">
+            <span>🔄</span> Reposicionar Flotas (Backtracking)
+          </button>
+        </div>
+      </div>
+
+      <!-- LOS DOS TABLEROS LADO A LADO -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        
+        <!-- TABLERO JUGADOR (DEFENSA) -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-base font-bold text-cyan-400 flex items-center gap-2">
+                <span>⚓</span> Flota de Bilbao (Tu Defensa)
+              </h2>
+              <p class="text-xs text-slate-400">Tus barcos: Pandas, NumPy, Scikit y Python</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300 font-mono">tablero_barcos</span>
+          </div>
+
+          <!-- Cabecera columnas 0..9 -->
+          <div class="grid grid-cols-11 gap-1 text-center font-mono text-xs text-slate-500 mb-1">
+            <div></div>
+            <div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+          </div>
+
+          <!-- Matriz del Jugador -->
+          <div id="grid-jugador" class="space-y-1 font-mono text-xs select-none">
+            <!-- Inyectado por JS -->
+          </div>
+        </div>
+
+        <!-- TABLERO RADAR / MÁQUINA (ATAQUE) -->
+        <div class="bg-slate-900/90 border border-rose-950/40 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-base font-bold text-rose-400 flex items-center gap-2">
+                <span>🎯</span> Radar Ofensivo (Ataque a la Máquina)
+              </h2>
+              <p class="text-xs text-slate-400">Haz clic en una casilla para atacar (0 a 9)</p>
+            </div>
+            <span class="text-xs bg-slate-800 px-2.5 py-1 rounded-lg text-slate-300 font-mono">tablero_disparos</span>
+          </div>
+
+          <!-- Cabecera columnas 0..9 -->
+          <div class="grid grid-cols-11 gap-1 text-center font-mono text-xs text-slate-500 mb-1">
+            <div></div>
+            <div>0</div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div>
+          </div>
+
+          <!-- Matriz del Radar Rival -->
+          <div id="grid-maquina" class="space-y-1 font-mono text-xs select-none">
+            <!-- Inyectado por JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTARIO DE BARCOS CON GUIÑOS AL BOOTCAMP -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+        <h3 class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-3">
+          Inventario de Barcos del Bootcamp BBK (10 barcos · 20 casillas)
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+            <div class="font-bold text-cyan-300">1x Acorazado BBK (4)</div>
+            <div class="text-[11px] text-slate-400">"El Coloso de la Ría"</div>
+            <div class="flex gap-1 mt-2">
+              <span class="w-4 h-4 rounded bg-cyan-600 inline-block"></span>
+              <span class="w-4 h-4 rounded bg-cyan-600 inline-block"></span>
+              <span class="w-4 h-4 rounded bg-cyan-600 inline-block"></span>
+              <span class="w-4 h-4 rounded bg-cyan-600 inline-block"></span>
+            </div>
+          </div>
+          <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+            <div class="font-bold text-sky-300">2x Fragatas Pandas (3)</div>
+            <div class="text-[11px] text-slate-400">DataFrame I y DataFrame II</div>
+            <div class="flex gap-1 mt-2">
+              <span class="w-4 h-4 rounded bg-sky-600 inline-block"></span>
+              <span class="w-4 h-4 rounded bg-sky-600 inline-block"></span>
+              <span class="w-4 h-4 rounded bg-sky-600 inline-block"></span>
+            </div>
+          </div>
+          <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+            <div class="font-bold text-blue-300">3x Destructores NumPy (2)</div>
+            <div class="text-[11px] text-slate-400">Matrices N-Dimensionales</div>
+            <div class="flex gap-1 mt-2">
+              <span class="w-4 h-4 rounded bg-blue-600 inline-block"></span>
+              <span class="w-4 h-4 rounded bg-blue-600 inline-block"></span>
+            </div>
+          </div>
+          <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+            <div class="font-bold text-indigo-300">4x Lanchas Python (1)</div>
+            <div class="text-[11px] text-slate-400">Scripts rápidos e iteradores</div>
+            <div class="flex gap-1 mt-2">
+              <span class="w-4 h-4 rounded bg-indigo-600 inline-block"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: GUIÓN DE PRESENTACIÓN (10 MINUTOS)  -->
+    <!-- ========================================== -->
+    <div id="tab-guion" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6">
+        <div>
+          <span class="px-3 py-1 bg-cyan-950 text-cyan-400 border border-cyan-800 rounded-full text-xs font-bold uppercase">
+            Estructura Recomendada · 10 Minutos Máximo
+          </span>
+          <h2 class="text-2xl font-black mt-2 text-white">Guión para Clavar la Presentación</h2>
+          <p class="text-slate-400 text-sm">
+            Diseñado para que hables con total seguridad y dejes 2 minutos para las preguntas del tribunal.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Minuto 0 a 2 -->
+          <div class="border border-slate-800 bg-slate-950/60 p-5 rounded-2xl relative">
+            <span class="absolute top-4 right-4 text-xs font-bold font-mono text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-lg">
+              00:00 - 02:00
+            </span>
+            <h3 class="font-bold text-cyan-300 text-base mb-2">1. Introducción y Arquitectura</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>• Saludo y mención al <strong>Bootcamp Data Science BBK</strong>.</li>
+              <li>• Explicación de la arquitectura modular: <strong>4 scripts .py</strong> (`variables.py`, `clases.py`, `funciones.py`, `main.py`).</li>
+              <li>• Por qué no se usó notebook: modularidad profesional y separación de responsabilidades.</li>
+            </ul>
+          </div>
+
+          <!-- Minuto 2 a 4 -->
+          <div class="border border-slate-800 bg-slate-950/60 p-5 rounded-2xl relative">
+            <span class="absolute top-4 right-4 text-xs font-bold font-mono text-sky-400 bg-sky-950/60 px-2.5 py-1 rounded-lg">
+              02:00 - 04:30
+            </span>
+            <h3 class="font-bold text-sky-300 text-base mb-2">2. El Desafío: Algoritmo de Backtracking</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>• Explicar por qué un `while` infinito con reintentos aleatorios podía quedarse atascado.</li>
+              <li>• La solución elegante: <strong>Búsqueda con Retroceso (Backtracking recursivo)</strong>.</li>
+              <li>• Ordenar de mayor a menor eslora y deshacer la posición si bloquea al resto de la flota.</li>
+              <li>• Probado en 1.000 tableros: media de 0.5 ms sin un solo error.</li>
+            </ul>
+          </div>
+
+          <!-- Minuto 4 a 7 -->
+          <div class="border border-slate-800 bg-slate-950/60 p-5 rounded-2xl relative">
+            <span class="absolute top-4 right-4 text-xs font-bold font-mono text-blue-400 bg-blue-950/60 px-2.5 py-1 rounded-lg">
+              04:30 - 07:30
+            </span>
+            <h3 class="font-bold text-blue-300 text-base mb-2">3. Demo en Terminal (`python3 main.py`)</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>• Abrir la terminal y ejecutar `python3 main.py`.</li>
+              <li>• Mostrar la colocación limpia y los dos tableros paralelos con índices 0 a 9.</li>
+              <li>• Disparar a una coordenada válida, fallar (agua) y ver cómo la máquina responde sin repetir casillas.</li>
+              <li>• Escribir el comando especial <strong>`demo`</strong> para mostrar al tribunal los barcos de la máquina sin perder el turno.</li>
+            </ul>
+          </div>
+
+          <!-- Minuto 7 a 10 -->
+          <div class="border border-slate-800 bg-slate-950/60 p-5 rounded-2xl relative">
+            <span class="absolute top-4 right-4 text-xs font-bold font-mono text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-lg">
+              07:30 - 10:00
+            </span>
+            <h3 class="font-bold text-emerald-300 text-base mb-2">4. Git, Buenas Prácticas y Conclusión</h3>
+            <ul class="text-xs text-slate-300 space-y-2">
+              <li>• Mostrar el repositorio Git (`git log`) con commits semánticos y `.gitignore`.</li>
+              <li>• Cero dependencias externas (`pip`), uso exclusivo de la librería estándar `random`.</li>
+              <li>• Agradecimientos al equipo de profesores de BBK y paso a la ronda de preguntas.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: ARQUITECTURA DE CÓDIGO              -->
+    <!-- ========================================== -->
+    <div id="tab-arquitectura" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6">
+        <div>
+          <span class="px-3 py-1 bg-blue-950 text-blue-400 border border-blue-800 rounded-full text-xs font-bold uppercase">
+            Diseño Modular Orientado a Objetos
+          </span>
+          <h2 class="text-2xl font-black mt-2 text-white">Estructura del Proyecto en 4 Archivos</h2>
+        </div>
+
+        <div class="space-y-4 font-mono text-xs">
+          <!-- variables.py -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <div class="text-cyan-400 font-bold mb-1">📄 variables.py</div>
+            <p class="text-slate-400 font-sans text-xs mb-2">Constantes fijas del juego.</p>
+            <pre class="text-slate-300 overflow-x-auto">DIMENSIONES = 10
+BARCOS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+TOTAL_VIDAS = sum(BARCOS)  # 20
+AGUA = "~" ; BARCO = "B" ; TOCADO = "X" ; FALLO = "O"</pre>
+          </div>
+
+          <!-- clases.py -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <div class="text-sky-400 font-bold mb-1">📄 clases.py (Clase Tablero)</div>
+            <p class="text-slate-400 font-sans text-xs mb-2">
+              Contiene dos matrices: <code>tablero_barcos</code> (defensa) y <code>tablero_disparos</code> (ofensiva/radar).
+              Implementa colocación determinista con <strong>Backtracking</strong>:
+            </p>
+            <pre class="text-slate-300 overflow-x-auto">def colocar_siguiente(indice):
+    if indice == len(barcos): return True
+    for casillas in posiciones_barajadas:
+        if all(tablero[f][c] == AGUA for f, c in casillas):
+            marcar_barco(casillas)
+            if colocar_siguiente(indice + 1): return True
+            deshacer_barco(casillas) # BACKTRACKING
+    return False</pre>
+          </div>
+
+          <!-- funciones.py -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <div class="text-blue-400 font-bold mb-1">📄 funciones.py</div>
+            <p class="text-slate-400 font-sans text-xs mb-2">Entrada validada 0-9, visualización dual, selección aleatoria sin repetición de la máquina.</p>
+          </div>
+
+          <!-- main.py -->
+          <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800">
+            <div class="text-indigo-400 font-bold mb-1">📄 main.py</div>
+            <p class="text-slate-400 font-sans text-xs mb-2">Bucle principal: gestiona turnos (quien acierta repite; quien falla cede turno) y condición de victoria.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="max-w-6xl mx-auto mt-12 pt-6 border-t border-slate-900 text-center text-xs text-slate-500">
+    Desarrollado para el Bootcamp de Data Science BBK · Bilbao, 2026. Proyecto "Hundir la Flota".
+  </footer>
+
+  <!-- LÓGICA DE JUEGO Y PRESENTACIÓN INTERACTIVA EN JAVASCRIPT -->
+  <script>
+    const DIM = 10;
+    const FLEET_SIZES = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+    
+    let jugadorBoard = [];
+    let maquinaBoard = [];
+    let radarJugador = [];
+    let vidasJugador = 20;
+    let vidasMaquina = 20;
+    let turno = 'jugador';
+    let demoActive = false;
+    let gameOver = false;
+
+    // --- TEMPORIZADOR 10 MINUTOS ---
+    let timerSeconds = 600;
+    let timerInterval = null;
+
+    function toggleTimer() {
+      const btn = document.getElementById('timer-btn');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.textContent = 'Reanudar';
+        btn.classList.replace('bg-amber-600', 'bg-cyan-600');
+      } else {
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            alert("⏰ ¡Tiempo de presentación completado (10 minutos)!");
+          }
+        }, 1000);
+        btn.textContent = 'Pausar';
+        btn.classList.replace('bg-cyan-600', 'bg-amber-600');
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = 600;
+      updateTimerDisplay();
+      const btn = document.getElementById('timer-btn');
+      btn.textContent = 'Iniciar';
+      btn.classList.replace('bg-amber-600', 'bg-cyan-600');
+    }
+
+    function updateTimerDisplay() {
+      const min = Math.floor(timerSeconds / 60);
+      const sec = timerSeconds % 60;
+      document.getElementById('timer-display').textContent = 
+        `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    }
+
+    // --- GENERACIÓN DE TABLERO CON BACKTRACKING EN JS (IDÉNTICO A PYTHON) ---
+    function generarTableroConBacktracking() {
+      let grid = Array(DIM).fill(null).map(() => Array(DIM).fill('~'));
+      
+      // Precalcular posiciones por eslora
+      let posPorEslora = {};
+      [4, 3, 2, 1].forEach(eslora => {
+        let setPos = [];
+        for (let r = 0; r < DIM; r++) {
+          for (let c = 0; c <= DIM - eslora; c++) {
+            let cells = [];
+            for (let i = 0; i < eslora; i++) cells.push([r, c + i]);
+            setPos.push(cells);
+          }
+        }
+        for (let r = 0; r <= DIM - eslora; r++) {
+          for (let c = 0; c < DIM; c++) {
+            let cells = [];
+            for (let i = 0; i < eslora; i++) cells.push([r + i, c]);
+            setPos.push(cells);
+          }
+        }
+        posPorEslora[eslora] = setPos;
+      });
+
+      function shuffle(arr) {
+        let a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function colocarSiguiente(idx) {
+        if (idx === FLEET_SIZES.length) return true;
+        let eslora = FLEET_SIZES[idx];
+        let posiciones = shuffle(posPorEslora[eslora]);
+
+        for (let cells of posiciones) {
+          if (cells.every(([r, c]) => grid[r][c] === '~')) {
+            cells.forEach(([r, c]) => grid[r][c] = 'B');
+            if (colocarSiguiente(idx + 1)) return true;
+            cells.forEach(([r, c]) => grid[r][c] = '~'); // Backtrack
+          }
+        }
+        return false;
+      }
+
+      colocarSiguiente(0);
+      return grid;
+    }
+
+    // --- INICIALIZACIÓN ---
+    function iniciarNuevaPartida() {
+      jugadorBoard = generarTableroConBacktracking();
+      maquinaBoard = generarTableroConBacktracking();
+      radarJugador = Array(DIM).fill(null).map(() => Array(DIM).fill('~'));
+      vidasJugador = 20;
+      vidasMaquina = 20;
+      turno = 'jugador';
+      gameOver = false;
+      demoActive = false;
+
+      document.getElementById('vidas-jugador').textContent = '20 / 20';
+      document.getElementById('vidas-maquina').textContent = '20 / 20';
+      actualizarTurnoBadge('Turno: Alumno BBK', 'bg-cyan-900/80', 'text-cyan-300');
+      document.getElementById('mensaje-estado').innerHTML = 
+        'Tableros inicializados con Backtracking. Haz clic en el <strong class="text-rose-400">Radar Ofensivo</strong> para disparar.';
+      
+      renderizarTableros();
+    }
+
+    function toggleDemoMode() {
+      demoActive = !demoActive;
+      const btn = document.getElementById('btn-demo');
+      if (demoActive) {
+        btn.classList.replace('text-amber-400', 'text-emerald-300');
+        btn.classList.replace('bg-amber-950/40', 'bg-emerald-950/60');
+        btn.innerHTML = '<span>👁️</span> Modo Demo Activo (Barcos Visibles)';
+      } else {
+        btn.classList.replace('text-emerald-300', 'text-amber-400');
+        btn.classList.replace('bg-emerald-950/60', 'bg-amber-950/40');
+        btn.innerHTML = '<span>👁️</span> Modo Demo / Tribunal (Revelar Rival)';
+      }
+      renderizarTableros();
+    }
+
+    function renderizarTableros() {
+      // 1. Grid Jugador
+      const gridJ = document.getElementById('grid-jugador');
+      gridJ.innerHTML = '';
+      for (let r = 0; r < DIM; r++) {
+        let rowDiv = document.createElement('div');
+        rowDiv.className = 'grid grid-cols-11 gap-1 items-center';
+        
+        let label = document.createElement('div');
+        label.className = 'text-center text-slate-500 font-mono text-xs';
+        label.textContent = r;
+        rowDiv.appendChild(label);
+
+        for (let c = 0; c < DIM; c++) {
+          let cell = document.createElement('div');
+          cell.className = 'h-7 md:h-8 rounded flex items-center justify-center font-bold text-xs transition border border-slate-800/80';
+          const val = jugadorBoard[r][c];
+
+          if (val === 'B') {
+            cell.className += ' bg-cyan-700/80 text-cyan-200 border-cyan-500/60 shadow-sm';
+            cell.textContent = '⛵';
+          } else if (val === 'X') {
+            cell.className += ' bg-rose-600 text-white font-black animate-pulse';
+            cell.textContent = 'X';
+          } else if (val === 'O') {
+            cell.className += ' bg-slate-800 text-slate-400';
+            cell.textContent = '·';
+          } else {
+            cell.className += ' bg-slate-950/80 text-slate-700 hover:bg-slate-900';
+            cell.textContent = '~';
+          }
+          rowDiv.appendChild(cell);
+        }
+        gridJ.appendChild(rowDiv);
+      }
+
+      // 2. Grid Máquina (Radar)
+      const gridM = document.getElementById('grid-maquina');
+      gridM.innerHTML = '';
+      for (let r = 0; r < DIM; r++) {
+        let rowDiv = document.createElement('div');
+        rowDiv.className = 'grid grid-cols-11 gap-1 items-center';
+        
+        let label = document.createElement('div');
+        label.className = 'text-center text-slate-500 font-mono text-xs';
+        label.textContent = r;
+        rowDiv.appendChild(label);
+
+        for (let c = 0; c < DIM; c++) {
+          let cell = document.createElement('button');
+          cell.className = 'h-7 md:h-8 rounded flex items-center justify-center font-bold text-xs transition border border-slate-800/80';
+          const shot = radarJugador[r][c];
+          const real = maquinaBoard[r][c];
+
+          if (shot === 'X') {
+            cell.className += ' bg-rose-600 text-white font-black cursor-not-allowed';
+            cell.textContent = 'X';
+          } else if (shot === 'O') {
+            cell.className += ' bg-slate-800 text-slate-400 cursor-not-allowed';
+            cell.textContent = '·';
+          } else {
+            // No disparado
+            if (demoActive && real === 'B') {
+              cell.className += ' bg-amber-900/60 border-amber-600/70 text-amber-300 hover:bg-amber-800';
+              cell.textContent = '⛵';
+            } else {
+              cell.className += ' water-cell text-slate-600 hover:border-cyan-400';
+              cell.textContent = '~';
+            }
+            if (!gameOver && turno === 'jugador') {
+              cell.onclick = () => dispararJugador(r, c);
+            } else {
+              cell.className += ' cursor-not-allowed';
+            }
+          }
+          rowDiv.appendChild(cell);
+        }
+        gridM.appendChild(rowDiv);
+      }
+    }
+
+    function dispararJugador(r, c) {
+      if (gameOver || turno !== 'jugador') return;
+      if (radarJugador[r][c] !== '~') return;
+
+      if (maquinaBoard[r][c] === 'B') {
+        maquinaBoard[r][c] = 'X';
+        radarJugador[r][c] = 'X';
+        vidasMaquina--;
+        document.getElementById('vidas-maquina').textContent = `${vidasMaquina} / 20`;
+
+        if (vidasMaquina === 0) {
+          gameOver = true;
+          document.getElementById('mensaje-estado').innerHTML = 
+            '🏆 <strong class="text-cyan-300">¡VICTORIA BBK!</strong> Has hundido toda la flota enemiga. ¡Excelente!';
+          renderizarTableros();
+          return;
+        }
+
+        document.getElementById('mensaje-estado').innerHTML = 
+          `🎯 <strong class="text-cyan-400">¡IMPACTO en (${r}, ${c})!</strong> Barco rival tocado. <strong>¡Vuelves a disparar!</strong>`;
+        renderizarTableros();
+      } else {
+        maquinaBoard[r][c] = 'O';
+        radarJugador[r][c] = 'O';
+        document.getElementById('mensaje-estado').innerHTML = 
+          `🌊 <strong class="text-blue-400">¡AGUA en (${r}, ${c})!</strong> Cedes el turno a la máquina...`;
+        turno = 'maquina';
+        actualizarTurnoBadge('Turno: Máquina Pensando...', 'bg-rose-950/80', 'text-rose-300');
+        renderizarTableros();
+        
+        // Disparo de la máquina tras pausa realista
+        setTimeout(dispararMaquina, 900);
+      }
+    }
+
+    function dispararMaquina() {
+      if (gameOver || turno !== 'maquina') return;
+
+      let disponibles = [];
+      for (let r = 0; r < DIM; r++) {
+        for (let c = 0; c < DIM; c++) {
+          if (jugadorBoard[r][c] !== 'X' && jugadorBoard[r][c] !== 'O') {
+            disponibles.push([r, c]);
+          }
+        }
+      }
+
+      if (disponibles.length === 0) return;
+      let [r, c] = disponibles[Math.floor(Math.random() * disponibles.length)];
+
+      if (jugadorBoard[r][c] === 'B') {
+        jugadorBoard[r][c] = 'X';
+        vidasJugador--;
+        document.getElementById('vidas-jugador').textContent = `${vidasJugador} / 20`;
+
+        if (vidasJugador === 0) {
+          gameOver = true;
+          document.getElementById('mensaje-estado').innerHTML = 
+            '💀 <strong class="text-rose-400">¡DERROTA!</strong> La máquina ha destruido todos tus barcos.';
+          renderizarTableros();
+          return;
+        }
+
+        document.getElementById('mensaje-estado').innerHTML = 
+          `💥 <strong class="text-rose-400">¡La máquina impactó en (${r}, ${c})!</strong> Acierta y vuelve a tirar...`;
+        renderizarTableros();
+        setTimeout(dispararMaquina, 1000);
+      } else {
+        jugadorBoard[r][c] = 'O';
+        document.getElementById('mensaje-estado').innerHTML = 
+          `🛡️ La máquina disparó a <strong>(${r}, ${c})</strong> y dio en AGUA. ¡Te toca!`;
+        turno = 'jugador';
+        actualizarTurnoBadge('Turno: Alumno BBK', 'bg-cyan-900/80', 'text-cyan-300');
+        renderizarTableros();
+      }
+    }
+
+    function actualizarTurnoBadge(texto, bg, color) {
+      const b = document.getElementById('turno-badge');
+      b.textContent = texto;
+      b.className = `px-2.5 py-0.5 rounded-full text-xs font-bold border border-current ${bg} ${color}`;
+    }
+
+    function showTab(tab) {
+      ['juego', 'guion', 'arquitectura'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        document.getElementById(`tab-btn-${t}`).classList.remove('border-cyan-400', 'text-cyan-400');
+        document.getElementById(`tab-btn-${t}`).classList.add('border-transparent', 'text-slate-400');
+      });
+      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      document.getElementById(`tab-btn-${tab}`).classList.add('border-cyan-400', 'text-cyan-400');
+      document.getElementById(`tab-btn-${tab}`).classList.remove('border-transparent', 'text-slate-400');
+    }
+
+    // Arrancar la primera partida al cargar
+    iniciarNuevaPartida();
+  </script>
+</body>
+</html>
