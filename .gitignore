@@ -1,3 +1,317 @@
+# FreeFileSync
+.sync.ffs_db
+
+# VScode
+.vscode
+
+# Folders
+*/ham/
+*/spam/
+*lenguaje/Teoria/data/train/
+*lenguaje/Teoria/data/test/
+*/data/dogs_cats/
+
+# Progress
+1-RampUp/1-Markdown/Teoria/Untitled-1.md
+1-RampUp/8-Repaso/ahorcado.ipynb
+1-RampUp/9-Hundir la flota/Enunciado_Hundir_La_Flota.md
+1-RampUp/8-Repaso/ahorcado.ipynb
+
+2-Data_Analysis/0-Matematicas_DS/1-Algebra_Lineal.ipynb
+2-Data_Analysis/0-Matematicas_DS/3-Probabilidad.ipynb
+2-Data_Analysis/0-Matematicas_DS/Anexo 1 - Cálculo de un intervalo de confianza.ipynb
+2-Data_Analysis/0-Matematicas_DS/Anexo 2 - Teorema central del límite.ipynb
+2-Data_Analysis/0-Matematicas_DS/Anexo 3 - Contraste de hipótesis.ipynb
+2-Data_Analysis/0-Matematicas_DS/Anexo 4 - Tests de dependencia entre variables.ipynb
+2-Data_Analysis/0-Matematicas_DS/img/boxplot.png
+2-Data_Analysis/0-Matematicas_DS/img/choose_algorithm.png
+2-Data_Analysis/0-Matematicas_DS/img/choose_algorithm2.png
+2-Data_Analysis/0-Matematicas_DS/img/correlation.jpg
+2-Data_Analysis/0-Matematicas_DS/img/dtypes.png
+2-Data_Analysis/0-Matematicas_DS/img/encoding.png
+2-Data_Analysis/0-Matematicas_DS/img/joins.jpg
+2-Data_Analysis/0-Matematicas_DS/img/MAE.png
+2-Data_Analysis/0-Matematicas_DS/img/MAPE.jpeg
+2-Data_Analysis/0-Matematicas_DS/img/mape.jpg
+2-Data_Analysis/0-Matematicas_DS/img/ml_pipeline.png
+2-Data_Analysis/0-Matematicas_DS/img/ml_types.png
+2-Data_Analysis/0-Matematicas_DS/img/mse.jpg
+2-Data_Analysis/0-Matematicas_DS/img/onehotencoder.jpg
+2-Data_Analysis/0-Matematicas_DS/img/precs_recall.png
+2-Data_Analysis/0-Matematicas_DS/img/qqplot.png
+2-Data_Analysis/0-Matematicas_DS/img/r_squared.png
+2-Data_Analysis/0-Matematicas_DS/img/rmse.png
+2-Data_Analysis/0-Matematicas_DS/img/roc.png
+2-Data_Analysis/0-Matematicas_DS/img/train_test_split.png
+2-Data_Analysis/1-Numpy/Teoria/1_Numpy.ipynb
+2-Data_Analysis/2-Pandas/Practica/0-Occupation/Occupation.ipynb
+2-Data_Analysis/2-Pandas/Practica/6-Beers/birras_repaso.ipynb
+2-Data_Analysis/2-Pandas/Teoría/2_Null_Values.ipynb
+2-Data_Analysis/2-Pandas/Teoría/3_Agrupaciones.ipynb
+2-Data_Analysis/2-Pandas/Teoría/4_Combinar_Datasets.ipynb
+2-Data_Analysis/3-Sources/Archivos/Practica/Ejercicio_descargas.ipynb
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/class_hlf.py
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/data_file.json
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/ejercicio_clase.csv
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/importante.pkl
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/laligaExcelWrite.xlsx
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/laligaWrite.csv
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/pepe.json
+2-Data_Analysis/3-Sources/Archivos/Teoría/data/preguntas.py
+2-Data_Analysis/3-Sources/Archivos/Teoría/extracted_files/laligaZIP.csv
+2-Data_Analysis/6-Visualización/2-Seaborn/Teoria/EDA_Seaborn.ipynb
+2-Data_Analysis/6-Visualización/3-Plotly/4 charts in one.html
+2-Data_Analysis/6-Visualización/3-Plotly/graph.png
+2-Data_Analysis/6-Visualización/3-Plotly/Plotly_tutorial_for_beginners.ipynb
+2-Data_Analysis/6-Visualización/4-Folium/0-Maps_with_Folium.ipynb
+2-Data_Analysis/6-Visualización/4-Folium/map_with_mini.html
+2-Data_Analysis/6-Visualización/4-Folium/map1.html
+2-Data_Analysis/7-Feature_engineering/1-Text/Working-With-Strings.ipynb
+2-Data_Analysis/7-Feature_engineering/1-Text/regex/teoria/regex_theory.ipynb
+2-Data_Analysis/7-Feature_engineering/2-Time Data/Teoria/Dates Python.ipynb
+2-Data_Analysis/7-Feature_engineering/3-Numerical Features/Numerical_Features-Data Analysis.ipynb
+2-Data_Analysis/8-BBDD/NoSQL/MongoDB/dpernas01_db_user
+2-Data_Analysis/8-BBDD/NoSQL/MongoDB/Taller/LICENSE.txt
+2-Data_Analysis/8-BBDD/NoSQL/MongoDB/Taller/README.md
+2-Data_Analysis/8-BBDD/No_SQL/Enlace_github.md
+2-Data_Analysis/8-BBDD/No_SQL/Taller_MongoDB_Danel.ipynb
+2-Data_Analysis/8-BBDD/SQL/Practica/2-Northwind/data/northwind.db
+2-Data_Analysis/8-BBDD/SQL/Teoria/SQL_Python/chinook8.db
+2-Data_Analysis/8-BBDD/SQL/Teoria/SQL_Python/SQL_Python.ipynb
+2-Data_Analysis/8-BBDD/SQL/Teoria/SQL_Python/data/query_1.csv
+2-Data_Analysis/8-BBDD/SQL/Teoria/SQL_Python/data/query_2.csv
+2-Data_Analysis/8-BBDD/SQL/Teoria/SQL_Python/data/query_3.csv
+2-Data_Analysis/8-BBDD/SQL/Teoria/SQL_Python/ejercicio/Crear_BD.pdf
+2-Data_Analysis/EDA/3. Ejemplo de análisis exploratorio.ipynb
+
+
+# Solved notebooks
+*.solved.ipynb
+*.unsolved.ipynb
+
+# Solved python scripts
+*.solved.py
+*.unsolved.py
+
+# Solved CSVs
+*.solved.csv
+
+# Solved SQL queries
+*.solved.sql
+
+# Solved anything else
+*.solved.*
+*.unsolved.*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[codz]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py.cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+#   For a library or package, you might want to ignore these files since the code is
+#   intended to run in multiple environments; otherwise, check them in:
+# .python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# UV
+#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#uv.lock
+
+# poetry
+#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
+#   This is especially recommended for binary packages to ensure reproducibility, and is more
+#   commonly ignored for libraries.
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#poetry.lock
+#poetry.toml
+
+# pdm
+#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
+#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
+#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
+#pdm.lock
+#pdm.toml
+.pdm-python
+.pdm-build/
+
+# pixi
+#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
+#pixi.lock
+#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
+#   in the .venv directory. It is recommended not to include this directory in version control.
+.pixi
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.envrc
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+
+# Abstra
+# Abstra is an AI-powered process automation framework.
+# Ignore directories containing user credentials, local state, and settings.
+# Learn more at https://abstra.io/docs
+.abstra/
+
+# Visual Studio Code
+#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#  you could uncomment the following to ignore the entire vscode folder
+# .vscode/
+
+# Ruff stuff:
+.ruff_cache/
+
+# PyPI configuration file
+.pypirc
+
+# Cursor
+#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
+#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
+#  refer to https://docs.cursor.com/context/ignore-files
+.cursorignore
+.cursorindexingignore
+
+# Marimo
+marimo/_static/
+marimo/_lsp/
+__marimo__/
+
+# Local repository ignores
 __pycache__/
 *.pyc
 .DS_Store
