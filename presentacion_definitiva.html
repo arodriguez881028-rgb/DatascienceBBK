@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Batalla de Barcos · BBK Bootcamp</title>
+<style>
+:root{--r:#C8102E;--v:#6B0F24;--t:#2a1a1e;--g:#f6eef0;--l:#e5d3d7}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:17px/1.55 "Segoe UI",system-ui,sans-serif;color:var(--t);background:#fff;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:16px;padding:10px 28px;border-bottom:3px solid var(--r)}
+header img{height:40px}header .rt{margin-left:auto;display:flex;gap:14px;align-items:center;color:var(--v);font-weight:600}
+#tm{background:#fff;color:var(--v);border:2px solid var(--v);padding:3px 12px;font-variant-numeric:tabular-nums}
+#tm:hover{background:var(--g)}
+main{flex:1;overflow:auto;padding:28px 6vw 20px}
+.s{display:none;max-width:1000px;margin:auto}.s.on{display:block}
+h1{font-size:3.2rem;color:var(--v);margin:0 0 6px;line-height:1.1}
+h2{font-size:1.9rem;color:var(--v);margin:0 0 14px;padding-left:12px;border-left:6px solid var(--r)}
+h3{color:var(--r);margin:16px 0 6px;font-size:1.1rem}
+pre{background:var(--v);color:#fff;padding:12px 16px;border-radius:6px;overflow:auto;font:13.5px/1.45 Consolas,monospace;margin:8px 0}
+code{background:var(--g);color:var(--v);padding:1px 5px;border-radius:3px}
+pre code{background:none;color:inherit;padding:0}
+table{border-collapse:collapse;width:100%;margin:8px 0}th{background:var(--v);color:#fff;text-align:left}
+th,td{padding:7px 10px;border:1px solid var(--l)}tr:nth-child(even) td{background:var(--g)}
+blockquote{margin:10px 0;padding:8px 14px;background:var(--g);border-left:4px solid var(--r)}
+li{margin:4px 0}.cover{text-align:center;padding-top:6vh}.cover p{font-size:1.2rem}
+.bar{height:6px;width:120px;background:var(--r);margin:18px auto}
+footer{display:flex;align-items:center;justify-content:center;gap:18px;padding:10px;border-top:1px solid var(--l)}
+button{background:var(--r);color:#fff;border:0;padding:8px 22px;border-radius:4px;font-size:15px;cursor:pointer}
+button:hover{background:var(--v)}button:disabled{background:var(--l);cursor:default}
+.d{display:flex;gap:6px}.d i{width:10px;height:10px;border-radius:50%;background:var(--l);cursor:pointer}.d i.on{background:var(--r)}
+.wm{position:fixed;left:18px;bottom:62px;color:var(--v);opacity:.28;font-weight:700;font-size:15px;pointer-events:none;z-index:5}
+button:focus-visible{outline:3px solid var(--v);outline-offset:2px}
+</style></head><body>
+<header><div><img src="logo.png" alt="The Bridge Talent Accelerator" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+<svg style="display:none" height="42" viewBox="0 0 250 42"><path d="M2 34Q22 2 42 34M12 34V22M32 34V22M0 34H44" fill="none" stroke="#C8102E" stroke-width="4"/><text x="54" y="22" font-size="19" font-weight="700" fill="#6B0F24" font-family="Segoe UI,sans-serif">THE BRIDGE</text><text x="54" y="38" font-size="11" fill="#C8102E" font-family="Segoe UI,sans-serif" letter-spacing="1.5">TALENT ACCELERATOR</text></svg></div>
+<div class="rt"><button id="tm" title="Clic: iniciar cronómetro de 10 min · clic de nuevo: reiniciar">⏱ 10:00</button><span id="n"></span></div></header>
+<main>
+<section class="s cover"><h1>🚢 Batalla de Barcos</h1><div class="bar"></div><p><b>Bootcamp Data Science BBK</b></p><p>Proyecto de entrega individual · Bilbao, 2026</p><p>Implementación completa del juego clásico Hundir la Flota en Python, con arquitectura modular y algoritmo de backtracking para la colocación de barcos.</p></section>
+
+<section class="s"><h2>📋 Descripción del Proyecto</h2><ul>
+<li>Juego de Hundir la Flota por consola en <b>Python puro</b> (sin librerías externas). Yo y la máquina.</li>
+<li>Objetivo: hundir los <b>10 barcos</b> del adversario antes de que hunda los tuyos.</li>
+<li>Tablero de <b>10 × 10</b> casillas (fila y columna de 0 a 9).</li>
+<li>La máquina <b>nunca repite disparos</b> y no necesita estructuras adicionales: consulta directamente su radar (<code>tablero_disparos</code>).</li>
+<li>Si aciertas, <b>vuelves a disparar</b>. Si fallas, cedes el turno.</li>
+<li>Gana el primero en hundir las <b>20 casillas</b> de barco del rival.</li></ul></section>
+
+<section class="s"><h2>🏗️ Estructura del Proyecto</h2>
+<pre><code>DatascienceBBK/
+│
+├── variables.py           # Constantes del juego
+├── clases.py              # Clase Tablero + algoritmo de backtracking
+├── funciones.py           # Entrada/salida, validación y visualización
+├── main.py                # Bucle principal del juego
+│
+├── presentacion.html      # Web interactiva para la presentación en clase
+├── lanzar_presentacion.py # Abre la presentación en tu navegador
+│
+└── README.md              # Este archivo</code></pre></section>
+
+<section class="s"><h2>🚀 Cómo Ejecutar el Juego</h2>
+<p>Asegúrate de tener <b>Python 3.7 o superior</b>. No se necesita instalar ninguna dependencia externa.</p>
+<pre><code># 1. Clona o descarga el repositorio
+git clone https://github.com/arodrigue/DatascienceBBK.git
+cd DatascienceBBK
+
+# 2. Lanza el juego
+python3 main.py</code></pre>
+<h3>Comandos disponibles durante la partida</h3>
+<table><tr><th>Comando</th><th>Acción</th></tr><tr><td><code>3 5</code></td><td>Disparar a la fila 3, columna 5 (separado por espacio o coma)</td></tr><tr><td><code>demo</code></td><td>Muestra los barcos de la máquina (modo truco/presentación) sin consumir turno</td></tr><tr><td><code>salir</code></td><td>Abandona la partida limpiamente</td></tr></table></section>
+
+<section class="s"><h2>🗂️ variables.py</h2><p>Contiene todas las constantes del juego que no varían:</p>
+<pre><code>DIMENSIONES = 10
+BARCOS      = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]  # 10 barcos, 20 casillas
+TOTAL_VIDAS = 20
+AGUA        = "~"   # Casilla sin disparar
+BARCO       = "B"   # Barco sin tocar
+TOCADO      = "X"   # Impacto en barco
+FALLO       = "O"   # Disparo al agua</code></pre></section>
+
+<section class="s"><h2>clases.py — Clase Tablero</h2>
+<p>Cada jugador tiene un objeto <code>Tablero</code> con dos matrices de 10 × 10:</p>
+<table><tr><th>Matriz</th><th>Nombre</th><th>Descripción</th></tr>
+<tr><td>Defensiva</td><td><code>tablero_barcos</code></td><td>Tus barcos (<code>B</code>) y los impactos recibidos (<code>X</code>, <code>O</code>). Es lo que ves en «Tu Flota».</td></tr>
+<tr><td>Ofensiva</td><td><code>tablero_disparos</code></td><td>Radar de disparos realizados al rival. Empieza todo en <code>~</code>. Es tu «niebla de guerra».</td></tr></table>
+<h3>Mecánica de un disparo (el Jugador dispara a la Máquina en (f, c))</h3>
+<ol><li>Se verifica que <code>jugador.tablero_disparos[f][c] == "~"</code> (no repetido).</li>
+<li>Si hay barco (<code>"B"</code>) en <code>maquina.tablero_barcos[f][c]</code> → se marca <code>"X"</code> y se descuenta 1 vida.</li>
+<li>Si hay agua → se marca <code>"O"</code>.</li>
+<li>El atacante registra el resultado en su propio radar: <code>jugador.tablero_disparos[f][c] = resultado</code>.</li></ol></section>
+
+<section class="s"><h2>Algoritmo de Colocación: Backtracking</h2>
+<p>Para garantizar que los barcos siempre se coloquen <b>sin solapamientos, sin salirse del tablero y sin riesgo de bucle infinito</b>:</p>
+<pre><code>1. Ordenar barcos de mayor a menor eslora: [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+2. Para cada barco:
+   a. Barajar aleatoriamente todas sus posiciones válidas.
+   b. Probar cada posición en el tablero.
+   c. Si la posición está libre: colocar el barco y pasar al siguiente.
+   d. Si no quedan posiciones válidas para los barcos siguientes:
+      → RETROCEDER (backtrack): deshacer la colocación y probar la siguiente posición.
+3. Si se colocan los 10 barcos: ¡éxito!</code></pre>
+<blockquote><b>Resultado:</b> &lt; 1 ms por tablero en el 100% de los casos (testado en 1.000 ejecuciones consecutivas).</blockquote></section>
+
+<section class="s"><h2>funciones.py</h2><p>Funciones auxiliares desacopladas de la lógica principal:</p><ul>
+<li><code>imprimir_tableros(tablero_jugador)</code>: muestra en paralelo la flota defensiva y el radar ofensivo con cabeceras 0..9.</li>
+<li><code>mostrar_demo_maquina(tablero_maquina)</code>: revela los barcos de la máquina para la presentación (sin consumir turno).</li>
+<li><code>pedir_coordenadas(tablero_jugador, tablero_maquina)</code>: valida enteros 0-9, detecta disparos repetidos, y gestiona <code>demo</code> y <code>salir</code>.</li>
+<li><code>disparo_maquina(tablero_maquina)</code>: selecciona con <code>random.choice</code> una casilla libre del <code>tablero_disparos</code> de la máquina.</li></ul></section>
+
+<section class="s"><h2>main.py — Flujo principal</h2>
+<pre><code>mostrar_bienvenida()
+inicializar tablero_jugador y tablero_maquina (Backtracking)
+
+while jugador.quedan_barcos() and maquina.quedan_barcos():
+    [TURNO JUGADOR]
+      imprimir tableros
+      pedir coordenadas válidas
+      ejecutar disparo sobre maquina
+      ¿impacto?
+        Sí → vuelve a tirar (continue)
+        No → cede turno a la máquina
+
+    [TURNO MÁQUINA]
+      elegir coordenada aleatoria no repetida
+      ejecutar disparo sobre jugador
+      ¿impacto?
+        Sí → vuelve a tirar
+        No → cede turno al jugador
+
+anunciar ganador</code></pre></section>
+
+<section class="s"><h2>🎯 Inventario de Barcos (Flota BBK)</h2>
+<table><tr><th>Cantidad</th><th>Eslora</th><th>Casillas</th></tr><tr><td>1x</td><td>4</td><td>4</td></tr><tr><td>2x</td><td>3</td><td>6</td></tr><tr><td>3x</td><td>2</td><td>6</td></tr><tr><td>4x</td><td>1</td><td>4</td></tr><tr><th>Total</th><th></th><th>20</th></tr></table></section>
+
+<section class="s"><h2>🖥️ Presentación Web Interactiva</h2>
+<p>Para la exposición del jueves 12 de marzo, se ha desarrollado una página web interactiva con tablero jugable en el navegador, cronómetro de 10 minutos, modo demo para el tribunal y guión de presentación.</p>
+<pre><code># Lanzar la presentación web (abre el navegador automáticamente)
+python3 lanzar_presentacion.py
+# → http://localhost:8000/presentacion.html</code></pre>
+<p>O simplemente abre <code>presentacion.html</code> directamente en tu navegador.</p></section>
+
+<section class="s"><h2>🛠️ Tecnologías y Autor</h2><ul>
+<li><b>Python 3.7+</b> — Lenguaje principal</li>
+<li><code>random</code> — Único módulo utilizado (incluido en la librería estándar)</li>
+<li><b>Git</b> — Control de versiones</li>
+<li>Sin dependencias pip. No requiere instalación adicional.</li></ul>
+<h3>👨‍💻 Autor</h3><p><b>Alejandro Rodríguez Peña</b><br>Alumno del Bootcamp de Data Science BBK · Bilbao, 2026</p></section>
+</main>
+<div class="wm">BBK BootCamp data science</div>
+<footer><button id="p">‹ Anterior</button><div class="d" id="d"></div><button id="x">Siguiente ›</button></footer>
+<script>
+const S=[...document.querySelectorAll('.s')],D=document.getElementById('d');let i=0,t=600,iv=0;
+S.forEach((_,k)=>{const e=document.createElement('i');e.onclick=()=>go(k);D.append(e)});
+function go(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j==i));
+[...D.children].forEach((e,j)=>e.classList.toggle('on',j==i));
+n.textContent=(i+1)+' / '+S.length;p.disabled=i==0;x.disabled=i==S.length-1;
+document.querySelector('main').scrollTop=0;location.hash=i+1}
+p.onclick=()=>go(i-1);x.onclick=()=>go(i+1);
+addEventListener('keydown',e=>{if(e.key=='ArrowRight'||e.key=='PageDown')go(i+1);if(e.key=='ArrowLeft'||e.key=='PageUp')go(i-1)});
+function show(){tm.textContent='⏱ '+String(t/60|0).padStart(2,'0')+':'+String(t%60).padStart(2,'0')}
+tm.onclick=()=>{if(iv){clearInterval(iv);iv=0;t=600;show()}else iv=setInterval(()=>{t=Math.max(0,t-1);show()},1000)};
+go((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>

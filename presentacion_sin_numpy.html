@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hundir la Flota · BBK Bootcamp</title>
+<style>
+:root{--r:#C8102E;--v:#6B0F24;--t:#2a1a1e;--g:#f6eef0;--l:#e5d3d7}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:16px/1.55 "Segoe UI",system-ui,sans-serif;color:var(--t);background:#fff;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:16px;padding:10px 28px;border-bottom:3px solid var(--r)}
+header .lg{display:flex;align-items:center}header img{height:40px}
+header b{margin-left:auto;color:var(--v);font-weight:600}
+main{flex:1;overflow:auto;padding:28px 6vw 20px;position:relative}
+.s{display:none;max-width:1000px;margin:auto}.s.on{display:block}
+h1{font-size:2.6rem;color:var(--v);margin:0 0 6px;line-height:1.1}
+h2{font-size:1.9rem;color:var(--v);margin:0 0 14px;padding-left:12px;border-left:6px solid var(--r)}
+h3{color:var(--r);margin:16px 0 6px;font-size:1.1rem}
+pre{background:var(--v);color:#fff;padding:12px 16px;border-radius:6px;overflow:auto;font:13px/1.45 Consolas,monospace;margin:8px 0}
+code{background:var(--g);color:var(--v);padding:1px 5px;border-radius:3px}
+pre code{background:none;color:inherit;padding:0}
+table{border-collapse:collapse;width:100%;margin:8px 0}th{background:var(--v);color:#fff;text-align:left}
+th,td{padding:6px 10px;border:1px solid var(--l)}tr:nth-child(even) td{background:var(--g)}
+blockquote{margin:10px 0;padding:8px 14px;background:var(--g);border-left:4px solid var(--r)}
+li{margin:3px 0}.cover{text-align:center;padding-top:6vh}.cover h1{font-size:3.4rem}
+.cover p{font-size:1.2rem}.cover .bar{height:6px;width:120px;background:var(--r);margin:18px auto}
+.idx a{display:block;padding:10px 14px;margin:6px 0;border:1px solid var(--l);border-left:6px solid var(--r);color:var(--v);text-decoration:none;font-weight:600;cursor:pointer}
+.idx a:hover{background:var(--g)}
+details{border:1px solid var(--l);border-radius:6px;margin:8px 0;padding:6px 12px}summary{cursor:pointer;font-weight:600;color:var(--v)}
+footer{display:flex;align-items:center;justify-content:center;gap:18px;padding:10px;border-top:1px solid var(--l)}
+button{background:var(--r);color:#fff;border:0;padding:8px 22px;border-radius:4px;font-size:15px;cursor:pointer}
+button:hover{background:var(--v)}button:disabled{background:var(--l);cursor:default}
+.d{display:flex;gap:6px}.d i{width:10px;height:10px;border-radius:50%;background:var(--l);cursor:pointer}.d i.on{background:var(--r)}
+.wm{position:fixed;left:18px;bottom:62px;color:var(--v);opacity:.28;font-weight:700;font-size:15px;pointer-events:none;z-index:5}
+.ft{text-align:center;color:#8a6a72;font-size:.85rem;margin-top:20px}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--v);outline-offset:2px}
+</style></head><body>
+<header><div class="lg"><img src="logo.png" alt="The Bridge Talent Accelerator" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+<svg style="display:none" height="42" viewBox="0 0 250 42"><path d="M2 34Q22 2 42 34M12 34V22M32 34V22M0 34H44" fill="none" stroke="#C8102E" stroke-width="4"/><text x="54" y="22" font-size="19" font-weight="700" fill="#6B0F24" font-family="Segoe UI,sans-serif">THE BRIDGE</text><text x="54" y="38" font-size="11" fill="#C8102E" font-family="Segoe UI,sans-serif" letter-spacing="1.5">TALENT ACCELERATOR</text></svg></div><b id="n"></b></header>
+<main>
+<section class="s cover"><h1>🚢 Hundir la Flota en Python</h1><div class="bar"></div><p><b>Proyecto del Bootcamp de Data Science · BBK</b></p><p>Versión modular con Python estándar (sin librerías externas)</p></section>
+
+<section class="s"><h2>1. Qué vamos a presentar</h2><div class="idx">
+<a data-g="3">1 · Las especificaciones del juego</a><a data-g="4">2 · La estructura modular del proyecto</a><a data-g="5">3 · Explicación del código, archivo por archivo</a><a data-g="12">4 · Cómo funciona una partida (flujo del bucle principal)</a><a data-g="14">5 · Lo más difícil del desarrollo</a><a data-g="15">6 · Cómo ejecutarlo</a><a data-g="16">7 · Posibles mejoras futuras</a></div></section>
+
+<section class="s"><h2>2. Especificaciones del juego</h2><table><tr><th>Aspecto</th><th>Detalle</th></tr>
+<tr><td>Estructura</td><td>Varios archivos <code>.py</code> (sin Jupyter): <code>variables.py</code>, <code>clases.py</code>, <code>funciones.py</code>, <code>main.py</code></td></tr>
+<tr><td>Tablero</td><td>10 × 10 casillas (filas y columnas de 0 a 9)</td></tr>
+<tr><td>Flota por jugador</td><td>1 barco de 4, 2 de 3, 3 de 2 y 4 de 1 → <b>20 casillas de barco</b></td></tr>
+<tr><td>Turnos</td><td>Alternos; <b>empieza el usuario</b></td></tr>
+<tr><td>Regla de acierto</td><td>Si aciertas, <b>repites turno</b>; si fallas, pasa al rival</td></tr>
+<tr><td>La máquina</td><td>Dispara de forma aleatoria, sin repetir casillas</td></tr>
+<tr><td>Victoria</td><td>Gana quien hunde toda la flota contraria</td></tr>
+<tr><td>Dependencias</td><td>Ninguna: solo la librería estándar de Python (<code>random</code>)</td></tr></table></section>
+
+<section class="s"><h2>3. Estructura del proyecto</h2>
+<pre><code>hundir_la_flota/
+├── variables.py            → constantes del juego
+├── clases.py               → clase Tablero (lógica del juego)
+├── funciones.py            → entrada del usuario, impresión, disparo de la máquina
+├── main.py                 → bucle principal de la partida
+├── lanzar_presentacion.py  → servidor local para abrir la presentación web
+└── presentacion.html       → presentación interactiva en el navegador</code></pre>
+<h3>Idea clave: separación de responsabilidades</h3><p>Cada archivo hace una sola cosa, lo que hace el código más fácil de leer, probar y modificar:</p>
+<ul><li><code>variables.py</code> <b>define</b> (datos fijos)</li><li><code>clases.py</code> <b>modela</b> (qué es un tablero y qué puede hacer)</li><li><code>funciones.py</code> <b>auxilia</b> (interacción con el usuario y la máquina)</li><li><code>main.py</code> <b>orquesta</b> (junta todo en el flujo del juego)</li></ul>
+<h3>Dependencias entre archivos</h3><pre><code>main.py ──► clases.py ──► variables.py
+   │                          ▲
+   └──────► funciones.py ─────┘</code></pre></section>
+
+<section class="s"><h2>4.1 variables.py — las constantes</h2>
+<pre><code>DIMENSIONES = 10
+BARCOS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+TOTAL_VIDAS = sum(BARCOS)  # 20
+
+AGUA = "~"
+BARCO = "B"
+TOCADO = "X"
+FALLO = "O"</code></pre>
+<ul><li><code>DIMENSIONES</code>: tamaño del tablero. Si algún día queremos otro tamaño, solo se cambia aquí.</li><li><code>BARCOS</code>: lista de <b>esloras</b> (longitudes). Cada número es un barco: un 4, dos 3, tres 2 y cuatro 1.</li><li><code>TOTAL_VIDAS</code>: suma de la lista = 20 casillas de barco que hay que destruir.</li><li>Símbolos: cada estado de una casilla tiene su carácter. Usar constantes en lugar de escribir <code>"~"</code> por todo el código evita errores y permite cambiar la apariencia en un solo sitio.</li></ul>
+<table><tr><th>Símbolo</th><th>Significado</th></tr><tr><td><code>~</code></td><td>Agua (sin disparar)</td></tr><tr><td><code>B</code></td><td>Barco propio</td></tr><tr><td><code>X</code></td><td>Barco tocado</td></tr><tr><td><code>O</code></td><td>Disparo al agua (fallo)</td></tr></table></section>
+
+<section class="s"><h2>4.2 clases.py — la clase Tablero</h2>
+<p>Cada jugador (usuario y máquina) tiene <b>un objeto <code>Tablero</code></b> con dos matrices:</p>
+<table><tr><th>Matriz</th><th>Qué guarda</th><th>Quién la ve</th></tr><tr><td><code>tablero_barcos</code></td><td><b>Defensa</b>: sus barcos y los disparos que recibe</td><td>Su dueño</td></tr><tr><td><code>tablero_disparos</code></td><td><b>Ataque (radar)</b>: los disparos que él ha hecho al rival</td><td>Su dueño</td></tr></table>
+<p>Las matrices son <b>listas de listas</b> de Python: <code>tablero[fila][columna]</code>.</p>
+<h3>Constructor</h3>
+<pre><code>class Tablero:
+    def __init__(self, id_jugador):
+        self.id_jugador = id_jugador
+        self.dimensiones = DIMENSIONES
+        self.tablero_barcos = [[AGUA for _ in range(DIMENSIONES)] for _ in range(DIMENSIONES)]
+        self.tablero_disparos = [[AGUA for _ in range(DIMENSIONES)] for _ in range(DIMENSIONES)]
+        self.vidas = TOTAL_VIDAS</code></pre>
+<ul><li>Cada matriz se crea con una <b>comprensión de listas doble</b>: 10 filas de 10 casillas de agua.</li><li><code>vidas</code> es un contador que empieza en 20 y baja cada vez que se toca un barco.</li></ul>
+<blockquote>Se usa una comprensión por fila (y no <code>[[AGUA] * 10] * 10</code>) para que cada fila sea una lista <b>independiente</b>; si no, al modificar una casilla cambiaría la misma columna en todas las filas.</blockquote></section>
+
+<section class="s"><h2>colocar_barcos_aleatoriamente() — pasos 1 y 2</h2>
+<h3>Paso 1: vaciar el tablero y preparar los datos</h3>
+<pre><code>self.tablero_barcos = [
+    [AGUA for _ in range(DIMENSIONES)] for _ in range(DIMENSIONES)
+]
+
+barcos = sorted(BARCOS, reverse=True)
+posiciones_por_eslora = {}</code></pre>
+<p>Los barcos se ordenan <b>de mayor a menor</b>: los grandes son los más difíciles de colocar, así que se colocan primero.</p>
+<h3>Paso 2: calcular todas las posiciones posibles de cada eslora</h3>
+<pre><code>for eslora in set(barcos):
+    posiciones = set()
+    for fila in range(DIMENSIONES):
+        for col in range(DIMENSIONES - eslora + 1):
+            posiciones.add(tuple((fila, col + i) for i in range(eslora)))
+    for fila in range(DIMENSIONES - eslora + 1):
+        for col in range(DIMENSIONES):
+            posiciones.add(tuple((fila + i, col) for i in range(eslora)))
+    posiciones_por_eslora[eslora] = list(posiciones)</code></pre>
+<ul><li>Se recorre cada <b>eslora distinta</b> (<code>set(barcos)</code>), no cada barco: así no se repite el cálculo.</li><li><b>Horizontales</b>: el barco puede empezar en las columnas <code>0 … 10 - eslora</code> → nunca se sale del tablero.</li><li><b>Verticales</b>: igual, pero variando la fila.</li><li>Cada posición es una <b>tupla de coordenadas</b>, por ejemplo <code>((3, 2), (3, 3), (3, 4))</code>.</li><li>Se guardan en un <code>set</code> para <b>evitar duplicados</b>: un barco de 1 casilla sería igual en horizontal y en vertical.</li></ul>
+<blockquote>Horizontal y vertical cubren las mismas colocaciones que Norte/Sur/Este/Oeste: un barco que «mira al Norte» ocupa las mismas casillas que uno vertical que empieza más arriba.</blockquote></section>
+
+<section class="s"><h2>Paso 3: búsqueda con retroceso (backtracking)</h2>
+<pre><code>def colocar_siguiente(indice):
+    if indice == len(barcos):
+        return True
+
+    posiciones = posiciones_por_eslora[barcos[indice]].copy()
+    random.shuffle(posiciones)
+
+    for casillas in posiciones:
+        if all(self.tablero_barcos[f][c] == AGUA for f, c in casillas):
+            for f, c in casillas:
+                self.tablero_barcos[f][c] = BARCO
+
+            if colocar_siguiente(indice + 1):
+                return True
+
+            # Esta opción impidió completar la flota: deshacerla.
+            for f, c in casillas:
+                self.tablero_barcos[f][c] = AGUA
+
+    return False
+
+if not colocar_siguiente(0):
+    raise RuntimeError("No se ha encontrado una colocación válida para la flota.")</code></pre>
+<p><code>colocar_siguiente(indice)</code> es <b>recursiva</b> y coloca el barco número <code>indice</code>:</p>
+<ol><li><b>Caso base</b>: si ya se han colocado todos los barcos → <code>True</code>.</li><li>Se <b>baraja</b> la lista de posiciones del barco para que el resultado sea aleatorio.</li><li>Para cada posición se comprueba que <b>todas sus casillas estén libres</b> (<code>all(... == AGUA)</code>). Esto evita solapamientos.</li><li>Si cabe, se <b>coloca</b> (casillas con <code>B</code>) y se pasa al siguiente barco.</li><li>Si el siguiente barco <b>no cabe en ningún sitio</b>, se <b>deshace</b> la colocación y se prueba otra posición. Esto es el <b>backtracking</b>.</li><li>Si se prueban todas las posiciones sin éxito, devuelve <code>False</code>.</li></ol>
+<blockquote><b>¿Por qué backtracking y no «reintentar hasta que salga»?</b> Reintentar al azar no garantiza terminar. Con backtracking cada posición se prueba como máximo una vez por nivel; como el conjunto de posiciones es <b>finito</b>, el método <b>siempre termina</b>.</blockquote></section>
+
+<section class="s"><h2>Disparos y fin de partida en Tablero</h2>
+<h3>recibir_disparo(fila, col)</h3>
+<pre><code>def recibir_disparo(self, fila, col):
+    if self.tablero_barcos[fila][col] == BARCO:
+        self.tablero_barcos[fila][col] = TOCADO
+        self.vidas -= 1
+        return TOCADO
+    elif self.tablero_barcos[fila][col] == AGUA:
+        self.tablero_barcos[fila][col] = FALLO
+        return FALLO
+    else:
+        return self.tablero_barcos[fila][col]   # ya impactada</code></pre>
+<p>Es el tablero <b>defensivo</b> quien recibe el disparo: barco → <code>X</code> y <b>se descuenta una vida</b>; agua → <code>O</code>; ya impactada → devuelve su estado sin cambiar nada.</p>
+<h3>registrar_disparo y quedan_barcos</h3>
+<pre><code>def registrar_disparo(self, fila, col, resultado):
+    self.tablero_disparos[fila][col] = resultado
+
+def quedan_barcos(self):
+    return self.vidas &gt; 0</code></pre>
+<ul><li><code>registrar_disparo</code> anota en el <b>radar del atacante</b> lo ocurrido (<code>X</code> u <code>O</code>): cada jugador ve lo que ha descubierto sin ver los barcos rivales.</li><li><code>quedan_barcos</code> es la <b>condición de fin de partida</b>: se acaba cuando las vidas llegan a 0.</li></ul>
+<blockquote><b>Un disparo → dos tableros</b>: el tablero del rival llama a <code>recibir_disparo</code> (actualiza su defensa) y el mío a <code>registrar_disparo</code> (actualiza mi radar). Mantener estas dos vistas separadas evita confundir «lo que hay» con «lo que sé».</blockquote></section>
+
+<section class="s"><h2>4.3 funciones.py — funciones auxiliares</h2>
+<h3>imprimir_tableros(tablero_jugador)</h3><p>Muestra <b>en paralelo</b> la flota del usuario (izquierda) y su radar de ataque (derecha), con números de fila y columna y una leyenda. Cada fila se construye con <code>" ".join(...)</code>.</p>
+<pre><code>   0 1 2 3 4 5 6 7 8 9            0 1 2 3 4 5 6 7 8 9
+ 0 ~ ~ B B ~ ~ ~ ~ ~ ~        0 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ 1 ~ ~ ~ ~ ~ ~ ~ X ~ ~        1 ~ ~ O ~ ~ ~ ~ ~ ~ ~</code></pre>
+<h3>mostrar_demo_maquina(tablero_maquina)</h3><p><b>Modo demo</b> para la exposición: muestra dónde están los barcos de la máquina. No gasta turno.</p>
+<h3>pedir_coordenadas(tablero_jugador, tablero_maquina)</h3><p>Pide fila y columna con <code>input</code> y <b>valida todo</b> antes de aceptar:</p>
+<table><tr><th>Validación</th><th>Mensaje si falla</th></tr><tr><td>Comando <code>salir</code></td><td>Termina la partida</td></tr><tr><td>Comando <code>demo</code></td><td>Muestra los barcos de la máquina y vuelve a pedir</td></tr><tr><td>Dos valores (por espacio o coma)</td><td>«Entrada inválida»</td></tr><tr><td>Ambos son enteros (<code>isdigit</code>)</td><td>«Deben ser números enteros»</td></tr><tr><td>Rango 0–9</td><td>«Coordenadas fuera de rango»</td></tr><tr><td>Casilla no disparada antes</td><td>«Ya has disparado en esa casilla»</td></tr></table>
+<p>Todo está dentro de un <code>while True</code> que <b>repite la pregunta hasta que la entrada es válida</b>: el programa nunca se rompe por un error de teclado. La comprobación de «ya disparada» usa el radar (<code>tablero_disparos</code>) como única fuente de verdad.</p></section>
+
+<section class="s"><h2>disparo_maquina(tablero_maquina)</h2>
+<pre><code>def disparo_maquina(tablero_maquina):
+    disponibles = [
+        (f, c)
+        for f in range(DIMENSIONES)
+        for c in range(DIMENSIONES)
+        if tablero_maquina.tablero_disparos[f][c] == AGUA
+    ]
+    return random.choice(disponibles)</code></pre>
+<ul><li>Se construye la lista de <b>todas las casillas aún sin disparar</b> de su radar.</li><li><code>random.choice</code> elige una al azar → <b>la máquina nunca repite disparo</b>.</li></ul>
+<h2 style="margin-top:28px">4.4 main.py — el bucle principal</h2>
+<pre><code>def jugar():
+    mostrar_bienvenida()
+    tablero_jugador = Tablero("Jugador")
+    tablero_maquina = Tablero("Máquina")
+    tablero_jugador.colocar_barcos_aleatoriamente()
+    tablero_maquina.colocar_barcos_aleatoriamente()
+
+    turno = "jugador"
+
+    while tablero_jugador.quedan_barcos() and tablero_maquina.quedan_barcos():
+        if turno == "jugador":
+            ...
+        else:
+            ...</code></pre></section>
+
+<section class="s"><h2>Flujo de una partida</h2>
+<ol><li>Se muestra la bienvenida con las reglas.</li><li>Se crean los dos tableros y <b>se colocan las flotas una sola vez</b>.</li><li>Empieza el usuario (<code>turno = "jugador"</code>).</li><li>El bucle <code>while</code> se repite <b>mientras ambos jugadores tengan barcos</b>.</li></ol>
+<details open><summary>Turno del jugador</summary><ol><li>Imprime los tableros y el marcador de vidas.</li><li>Pide coordenadas (si escribe <code>salir</code>, termina).</li><li><code>tablero_maquina.recibir_disparo(...)</code> y <code>tablero_jugador.registrar_disparo(...)</code>.</li><li>Si <b>TOCADO</b> → mensaje de impacto; si ya no quedan barcos enemigos, fin; si quedan, <b>sigue siendo su turno</b>.</li><li>Si <b>FALLO</b> → mensaje de agua y el turno pasa a la máquina.</li></ol></details>
+<details open><summary>Turno de la máquina</summary><p>Mismo proceso con <code>disparo_maquina</code>: si acierta repite, si falla cede el turno.</p></details>
+<details open><summary>Fin de partida</summary><p>Cuando el bucle termina, se comprueba quién se quedó sin barcos y se muestra el mensaje de victoria 🏆 o derrota 💀.</p></details>
+<pre><code>           ┌───────────────────────────┐
+           │  ¿Quedan barcos a ambos?  │◄──────────────┐
+           └─────────────┬─────────────┘               │
+                         │ sí                          │
+              ┌──────────▼──────────┐                  │
+              │  ¿Turno de quién?   │                  │
+              └───┬─────────────┬───┘                  │
+          jugador │             │ máquina              │
+                  ▼             ▼                      │
+            Dispara          Dispara                   │
+         ┌─ ¿Tocado? ─┐   ┌─ ¿Tocado? ─┐               │
+         │sí        no│   │sí        no│               │
+         ▼           ▼   ▼            ▼                │
+    repite turno  pasa turno   repite turno  pasa turno│
+         └───────────┴───────────┴────────────┴────────┘</code></pre></section>
+
+<section class="s"><h2>4.5 lanzar_presentacion.py y presentacion.html</h2>
+<ul><li><code>presentacion.html</code> es una <b>presentación interactiva en el navegador</b>, con una versión jugable del juego.</li><li><code>lanzar_presentacion.py</code> levanta un pequeño servidor HTTP local (<code>http.server</code>, puerto 8000) y <b>abre el navegador automáticamente</b> en <code>http://localhost:8000/presentacion.html</code>. Se detiene con <code>Ctrl+C</code>.</li></ul></section>
+
+<section class="s"><h2>5. Lo más difícil del desarrollo</h2>
+<h3>🔹 La colocación aleatoria de barcos</h3><p>Fue la parte más compleja: había que validar que las naves <b>no se salieran del tablero</b> y que <b>no se solaparan</b> entre sí, gestionando distintas orientaciones.</p><p><b>Solución:</b> calcular de antemano solo las posiciones que caben en el tablero y usar <b>backtracking</b> para garantizar que siempre se encuentra una colocación válida y que el método termina.</p>
+<h3>🔹 La sincronización de los tableros duales</h3><p>Mantener separada la vista real del tablero propio frente al tablero de seguimiento de ataques requirió una lógica limpia para no confundir coordenadas ni estados (agua frente a impacto).</p><p><b>Solución:</b> dos matrices por jugador con responsabilidades claras:</p>
+<ul><li><code>tablero_barcos</code> ← lo modifica <b><code>recibir_disparo</code></b> (lo que me hacen)</li><li><code>tablero_disparos</code> ← lo modifica <b><code>registrar_disparo</code></b> (lo que yo hago)</li></ul></section>
+
+<section class="s"><h2>6. Cómo ejecutarlo</h2>
+<pre><code># 1. Jugar en la consola (no requiere instalar nada)
+python main.py
+
+# 2. Abrir la presentación en el navegador
+python lanzar_presentacion.py</code></pre>
+<h3>Comandos durante la partida</h3><ul><li><code>3 4</code> o <code>3,4</code> → dispara a fila 3, columna 4</li><li><code>demo</code> → muestra los barcos de la máquina (sin gastar turno)</li><li><code>salir</code> → abandona la partida</li></ul></section>
+
+<section class="s"><h2>7. Posibles mejoras futuras</h2><ul><li>Detectar y avisar cuando un barco queda <b>hundido</b> por completo (no solo tocado).</li><li>IA de la máquina más inteligente: tras un impacto, disparar a las casillas adyacentes.</li><li>Permitir que el usuario coloque sus propios barcos.</li><li>Simplificar el manejo de matrices con <b>NumPy</b> (slices para colocar barcos, <code>count_nonzero</code> para las vidas).</li><li>Guardar estadísticas de partidas.</li></ul>
+<p class="ft">Desarrollado para el Bootcamp de Data Science BBK · Bilbao, 2026 · Proyecto «Hundir la Flota»</p></section>
+</main>
+<div class="wm">BBK BootCamp data science</div>
+<footer><button id="p">‹ Anterior</button><div class="d" id="d"></div><button id="x">Siguiente ›</button></footer>
+<script>
+const S=[...document.querySelectorAll('.s')],D=document.getElementById('d');let i=0;
+S.forEach((_,k)=>{const e=document.createElement('i');e.onclick=()=>go(k);D.append(e)});
+function go(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j==i));
+[...D.children].forEach((e,j)=>e.classList.toggle('on',j==i));
+n.textContent=(i+1)+' / '+S.length;p.disabled=i==0;x.disabled=i==S.length-1;
+document.querySelector('main').scrollTop=0;location.hash=i+1}
+p.onclick=()=>go(i-1);x.onclick=()=>go(i+1);
+document.querySelectorAll('[data-g]').forEach(a=>a.onclick=()=>go(a.dataset.g-1));
+addEventListener('keydown',e=>{if(e.key=='ArrowRight'||e.key=='PageDown')go(i+1);if(e.key=='ArrowLeft'||e.key=='PageUp')go(i-1)});
+go((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>

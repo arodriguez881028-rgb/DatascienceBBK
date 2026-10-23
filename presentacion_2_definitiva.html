@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Presentación 2 definitiva · Hundir la Flota</title>
+<style>
+:root{--r:#C8102E;--v:#6B0F24;--t:#2a1a1e;--g:#f6eef0;--l:#e5d3d7}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:17px/1.6 "Segoe UI",system-ui,sans-serif;color:var(--t);background:#fff;display:flex;flex-direction:column}
+header{display:flex;align-items:center;gap:16px;padding:10px 28px;border-bottom:3px solid var(--r)}
+header img{height:40px}header b{margin-left:auto;color:var(--v);font-weight:600}
+main{flex:1;overflow:auto;padding:28px 6vw 20px}
+.s{display:none;max-width:1000px;margin:auto}.s.on{display:block}
+h1{font-size:3rem;color:var(--v);margin:0 0 6px;line-height:1.1}
+h2{font-size:1.9rem;color:var(--v);margin:0 0 14px;padding-left:12px;border-left:6px solid var(--r)}
+h3{color:var(--r);margin:16px 0 6px;font-size:1.15rem}
+pre{background:var(--v);color:#fff;padding:12px 16px;border-radius:6px;overflow:auto;font:14px/1.5 Consolas,monospace;margin:8px 0}
+code{background:var(--g);color:var(--v);padding:1px 5px;border-radius:3px}
+pre code{background:none;color:inherit;padding:0}
+blockquote{margin:12px 0;padding:10px 16px;background:var(--g);border-left:4px solid var(--r)}
+li{margin:6px 0}.cover{text-align:center;padding-top:8vh}.cover p{font-size:1.2rem}
+.bar{height:6px;width:120px;background:var(--r);margin:18px auto}
+.idx a{display:block;padding:10px 14px;margin:6px 0;border:1px solid var(--l);border-left:6px solid var(--r);color:var(--v);font-weight:600;cursor:pointer}
+.idx a:hover{background:var(--g)}
+footer{display:flex;align-items:center;justify-content:center;gap:18px;padding:10px;border-top:1px solid var(--l)}
+button{background:var(--r);color:#fff;border:0;padding:8px 22px;border-radius:4px;font-size:15px;cursor:pointer}
+button:hover{background:var(--v)}button:disabled{background:var(--l);cursor:default}
+.d{display:flex;gap:6px}.d i{width:10px;height:10px;border-radius:50%;background:var(--l);cursor:pointer}.d i.on{background:var(--r)}
+.wm{position:fixed;left:18px;bottom:62px;color:var(--v);opacity:.28;font-weight:700;font-size:15px;pointer-events:none;z-index:5}
+button:focus-visible{outline:3px solid var(--v);outline-offset:2px}
+</style></head><body>
+<header><div><img src="logo.png" alt="The Bridge Talent Accelerator" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+<svg style="display:none" height="42" viewBox="0 0 250 42"><path d="M2 34Q22 2 42 34M12 34V22M32 34V22M0 34H44" fill="none" stroke="#C8102E" stroke-width="4"/><text x="54" y="22" font-size="19" font-weight="700" fill="#6B0F24" font-family="Segoe UI,sans-serif">THE BRIDGE</text><text x="54" y="38" font-size="11" fill="#C8102E" font-family="Segoe UI,sans-serif" letter-spacing="1.5">TALENT ACCELERATOR</text></svg></div><b id="n"></b></header>
+<main>
+<section class="s cover"><h1>🚢 Hundir la Flota<br>en Python Puro</h1><div class="bar"></div><p><b>Bootcamp Data Science · BBK</b></p></section>
+
+<section class="s"><h2>Contenido</h2><div class="idx">
+<a data-g="3">1 · Introducción y Funcionalidades del Proyecto</a><a data-g="4">2 · ¿Por qué modularizar el código?</a><a data-g="6">3 · Desafíos Técnicos y Mejoras Futuras</a><a data-g="8">4 · Explicación del Código por Bloques (Archivo por Archivo)</a></div></section>
+
+<section class="s"><h2>1. Introducción y Funcionalidades del Proyecto</h2>
+<p>El proyecto consiste en una recreación completa del clásico juego de Hundir la Flota desarrollado en <b>Python puro, sin librerías externas</b>. Enfrenta a un jugador humano contra una máquina en una partida por consola donde el objetivo es hundir las 20 casillas de barco del rival antes de que él destruya las tuyas.</p>
+<ul><li><b>Tablero</b> de 10×10 casillas (con filas y columnas numeradas de 0 a 9).</li>
+<li><b>Flota equilibrada:</b> 1 barco de 4 esloras, 2 de 3, 3 de 2 y 4 de 1 (sumando un total de 20 casillas de barco o vidas).</li>
+<li><b>Dinámica de turnos:</b> si aciertas en un barco enemigo, vuelves a disparar; si fallas, cedes el turno al contrincante.</li>
+<li><b>Control inteligente:</b> la máquina consulta directamente su propio radar (<code>tablero_disparos</code>) para no repetir nunca un disparo previo.</li>
+<li><b>Condición de victoria:</b> gana el primer jugador en agotar todas las vidas del oponente.</li></ul></section>
+
+<section class="s"><h2>2. ¿Por qué modularizar el código?</h2>
+<p>Dividir un programa en varios archivos en lugar de concentrarlo en un único script kilométrico aporta ventajas clave:</p>
+<ul><li><b>Separación de responsabilidades (Separation of Concerns):</b> cada archivo tiene un propósito único y bien delimitado (constantes globales, lógica de clases, funciones auxiliares y control de flujo principal).</li>
+<li><b>Mantenibilidad y legibilidad:</b> facilita la localización de errores, la modificación de reglas del juego (como alterar el tamaño del tablero o las esloras de la flota) y la comprensión del código de cara a una exposición académica.</li>
+<li><b>Escalabilidad y colaboración:</b> permite que distintos desarrolladores trabajen de manera independiente en la interfaz, la inteligencia artificial o la estructura de datos sin interferir en el resto del sistema.</li></ul></section>
+
+<section class="s"><h2>Estructura modular del proyecto</h2>
+<pre><code>variables.py  →  Configuración global e inmutabilidad.
+clases.py     →  Lógica del tablero y algoritmos de colocación.
+funciones.py  →  Interfaz de usuario, validaciones y lógica de la máquina.
+main.py       →  Bucle principal y control del flujo de la partida.</code></pre></section>
+
+<section class="s"><h2>3. Desafíos Técnicos y Mejoras Futuras</h2>
+<h3>El Gran Desafío: Colocación aleatoria con Backtracking</h3>
+<p>Colocar una flota completa de forma completamente aleatoria en un tablero de 10×10 sin que los barcos se solapen y sin que la ubicación de un barco grande bloquee el espacio disponible para los barcos restantes es un reto algorítmico complejo.</p>
+<blockquote><b>Solución implementada:</b> se diseñó un algoritmo de búsqueda con retroceso (<b>backtracking</b>) dentro de la clase <code>Tablero</code>. El programa prueba colocar cada barco de forma recursiva. Si una posición elegida bloquea la colocación de los barcos posteriores, el algoritmo «deshace» el movimiento de forma eficiente (retrocede) y prueba con otra combinación posible dentro de un conjunto finito de posiciones válidas.</blockquote></section>
+
+<section class="s"><h2>Mejora Propuesta: Estrategia de IA Avanzada (Caza/Orientación)</h2>
+<p>Actualmente, la máquina selecciona sus disparos de forma puramente aleatoria entre las casillas de agua disponibles en su radar.</p>
+<blockquote><b>Evolución ideal:</b> implementar una estrategia inspirada en el comportamiento humano. Cuando la máquina acierta (<code>TOCADO</code>), en lugar de disparar al azar en el siguiente turno, el sistema debería entrar en un modo de «orientación», priorizando disparar a las casillas adyacentes (arriba, abajo, izquierda y derecha) hasta hundir por completo el barco enemigo, optimizando significativamente su rendimiento táctico.</blockquote></section>
+
+<section class="s"><h2>4. Explicación del Código por Bloques</h2>
+<h3>1. variables.py — Constantes e Inmutabilidad</h3>
+<p>Este archivo almacena todos los elementos fijos e inmutables del juego. Al definir constantes en mayúsculas, evitamos el uso de «números mágicos» dispersos por el código y garantizamos una consistencia absoluta.</p>
+<ul><li><b>Dimensiones y Flota:</b> <code>DIMENSIONES = 10</code> fija el tamaño de la cuadrícula, mientras que la lista <code>BARCOS = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]</code> y <code>TOTAL_VIDAS = 20</code> definen la estructura de la partida.</li>
+<li><b>Símbolos visuales:</b> se definen caracteres como <code>AGUA = "~"</code>, <code>BARCO = "B"</code>, <code>TOCADO = "X"</code> y <code>FALLO = "O"</code>. Centralizar estos elementos permite modificar la representación visual de los tableros de forma inmediata cambiando una sola línea de código.</li></ul></section>
+
+<section class="s"><h2>2. clases.py — Estructura de Datos y Lógica del Tablero</h2>
+<p>Define la clase <code>Tablero</code>, la cual modela de forma independiente tanto el estado defensivo como ofensivo de cada jugador.</p>
+<ul><li><b>Constructor (<code>__init__</code>):</b> crea dos matrices independientes de 10×10 para cada participante:
+<ul><li><code>tablero_barcos</code>: matriz defensiva donde se ubica la flota propia y se reciben los impactos del rival.</li><li><code>tablero_disparos</code>: matriz ofensiva (radar) donde se registran los ataques realizados contra el contrincante.</li></ul></li>
+<li><b>Colocación de barcos (<code>colocar_barcos_aleatoriamente</code>):</b> aplica la lógica de backtracking analizada en los desafíos técnicos, generando combinaciones posibles por eslora y validando recursivamente que no existan colisiones.</li>
+<li><b>Recepción de disparos (<code>recibir_disparo</code>):</b> evalúa una coordenada de ataque entrante. Si impacta en una casilla con <code>BARCO</code>, la transforma en <code>TOCADO</code>, reduce en 1 las vidas del jugador y retorna el estado; si impacta en <code>AGUA</code>, la marca como <code>FALLO</code>.</li></ul></section>
+
+<section class="s"><h2>3. funciones.py — Interfaz, Validación y Disparo de la Máquina</h2>
+<p>Agrupa todas las funciones auxiliares dedicadas a la interacción por consola, el control de errores y la toma de decisiones del oponente automático.</p>
+<ul><li><b>Visualización y consola (<code>imprimir_tableros</code> y <code>mostrar_demo_maquina</code>):</b> muestra de forma paralela y limpia el tablero defensivo y el radar ofensivo del usuario, incorporando un modo demo opcional para revelar la posición de los barcos enemigos durante la presentación.</li>
+<li><b>Validación de entradas (<code>pedir_coordenadas</code>):</b> solicita las coordenadas en formato de texto (ej. <code>3 4</code>), comprueba que el formato sea numérico, valida que se encuentren dentro del rango de 0 a 9 y verifica que la casilla no haya sido atacada previamente consultando el radar. Gestiona además comandos especiales como <code>'demo'</code> y <code>'salir'</code>.</li>
+<li><b>Disparo automático (<code>disparo_maquina</code>):</b> filtra todas las coordenadas del radar de la máquina que aún se encuentran marcadas como agua y emplea la función <code>random.choice()</code> para seleccionar una posición válida de ataque.</li></ul></section>
+
+<section class="s"><h2>4. main.py — El Bucle Principal del Juego (jugar)</h2>
+<p>Controla el flujo completo de ejecución y conecta todos los módulos anteriores en una secuencia coherente.</p>
+<ul><li><b>Inicialización:</b> muestra el mensaje de bienvenida, instancia los objetos <code>Tablero</code> para el usuario y la máquina, y despliega automáticamente las flotas.</li>
+<li><b>Bucle de la partida (<code>while</code>):</b> mantiene el flujo activo mientras ambos contrincantes conserven vidas (<code>quedan_barcos()</code>).</li>
+<li><b>Alternancia de turnos:</b>
+<ul><li>En el turno del <b>jugador</b>, se imprime el estado actual, se solicitan coordenadas validadas, se ejecuta el ataque sobre la máquina y se evalúa el resultado (repitiendo el turno en caso de acierto).</li><li>En el turno de la <b>máquina</b>, se calcula la coordenada mediante la función de disparo, se ataca el tablero del usuario y se aplica la misma lógica de continuidad si se acierta un impacto.</li></ul></li>
+<li><b>Cierre y Victoria:</b> al romperse el bucle por la destrucción de una flota, se evalúa qué tablero se quedó sin vidas y se emite el mensaje final de victoria o derrota.</li></ul></section>
+</main>
+<div class="wm">BBK BootCamp data science</div>
+<footer><button id="p">‹ Anterior</button><div class="d" id="d"></div><button id="x">Siguiente ›</button></footer>
+<script>
+const S=[...document.querySelectorAll('.s')],D=document.getElementById('d');let i=0;
+S.forEach((_,k)=>{const e=document.createElement('i');e.onclick=()=>go(k);D.append(e)});
+function go(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j==i));
+[...D.children].forEach((e,j)=>e.classList.toggle('on',j==i));
+n.textContent=(i+1)+' / '+S.length;p.disabled=i==0;x.disabled=i==S.length-1;
+document.querySelector('main').scrollTop=0;location.hash=i+1}
+p.onclick=()=>go(i-1);x.onclick=()=>go(i+1);
+document.querySelectorAll('[data-g]').forEach(a=>a.onclick=()=>go(a.dataset.g-1));
+addEventListener('keydown',e=>{if(e.key=='ArrowRight'||e.key=='PageDown')go(i+1);if(e.key=='ArrowLeft'||e.key=='PageUp')go(i-1)});
+go((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>
